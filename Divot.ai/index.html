@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Golf Practice Tracker</title>
+    <title> DIVOT.AI </title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -25,14 +25,37 @@
         <div class="tab-navigation">
             <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
             <button class="tab-btn" data-tab="practice">Practice Log</button>
+            <button class="tab-btn" data-tab="rounds">Add Round</button>
             <button class="tab-btn" data-tab="history">History</button>
+            <button class="tab-btn" data-tab="coaching">AI Coaching</button>
             <button class="tab-btn" data-tab="settings">Settings</button>
         </div>
 
         <!-- Dashboard Tab -->
         <div class="tab-content active" id="dashboard">
+            <!-- Handicap Display -->
+            <div class="card handicap-card">
+                <h2>🏆 Your Handicap</h2>
+                <div class="handicap-display">
+                    <span class="handicap-number" id="currentHandicap">N/A</span>
+                    <span class="handicap-label">Handicap Index</span>
+                </div>
+                <div class="handicap-trend" id="handicapTrend">
+                    <span class="trend-text">No rounds recorded yet</span>
+                </div>
+            </div>
+
+            <!-- Handicap Chart -->
             <div class="card">
-                <h2>📊 Your Progress</h2>
+                <h2>📈 Handicap Progression</h2>
+                <div class="chart-container">
+                    <canvas id="handicapChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Practice Stats -->
+            <div class="card">
+                <h2>📊 Practice Statistics</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <span class="stat-number" id="totalSessions">0</span>
@@ -142,6 +165,76 @@
         </div>
     </div>
 
+    <!-- Add Round Tab -->
+    <div class="tab-content" id="rounds">
+        <div class="card">
+            <h2>🏌️‍♂️ Log Golf Round</h2>
+            <form id="roundForm">
+                <div class="form-group">
+                    <label for="roundDate">Date:</label>
+                    <input type="date" id="roundDate" name="roundDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="courseName">Course Name:</label>
+                    <input type="text" id="courseName" name="courseName" required
+                        placeholder="e.g., Pebble Beach Golf Links">
+                </div>
+
+                <div class="form-group">
+                    <label for="courseRating">Course Rating:</label>
+                    <input type="number" id="courseRating" name="courseRating" step="0.1" min="60" max="80" required
+                        placeholder="72.0">
+                </div>
+
+                <div class="form-group">
+                    <label for="slopeRating">Slope Rating:</label>
+                    <input type="number" id="slopeRating" name="slopeRating" min="55" max="155" required
+                        placeholder="113">
+                </div>
+
+                <div class="form-group">
+                    <label for="totalScore">Total Score:</label>
+                    <input type="number" id="totalScore" name="totalScore" min="50" max="200" required placeholder="85">
+                </div>
+
+                <div class="form-group">
+                    <label for="par">Course Par:</label>
+                    <input type="number" id="par" name="par" min="60" max="80" required placeholder="72">
+                </div>
+
+                <div class="form-group">
+                    <label for="weather">Weather Conditions:</label>
+                    <select id="weather" name="weather" required>
+                        <option value="">Select weather...</option>
+                        <option value="Sunny">☀️ Sunny</option>
+                        <option value="Partly Cloudy">⛅ Partly Cloudy</option>
+                        <option value="Cloudy">☁️ Cloudy</option>
+                        <option value="Windy">💨 Windy</option>
+                        <option value="Rainy">🌧️ Rainy</option>
+                        <option value="Foggy">🌫️ Foggy</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="roundNotes">Round Notes (optional):</label>
+                    <textarea id="roundNotes" name="roundNotes"
+                        placeholder="How did the round feel? Any highlights or areas to work on?"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-full">Log Round</button>
+            </form>
+        </div>
+
+        <!-- Recent Rounds -->
+        <div class="card">
+            <h2>📊 Recent Rounds</h2>
+            <div id="recentRounds" class="rounds-list">
+                <!-- Rounds will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <!-- History Tab -->
     <div class="tab-content" id="history">
         <div class="card">
@@ -151,6 +244,49 @@
             </div>
             <div id="sessionsList" class="session-list">
                 <!-- Sessions will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Coaching Tab -->
+    <div class="tab-content" id="coaching">
+        <div class="card">
+            <h2>🤖 AI Golf Coach</h2>
+            <p class="coaching-intro">Get personalized coaching advice based on your practice sessions and round data.
+                Ask questions about your game, get tips for improvement, and receive data-driven insights.</p>
+
+            <div class="coaching-interface">
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-message ai-message">
+                        <div class="message-content">
+                            <strong>AI Coach:</strong> Hello! I'm your AI golf coach. I can analyze your practice
+                            sessions and rounds to provide personalized advice. What would you like to know about your
+                            game?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <input type="text" id="coachingInput" placeholder="Ask me anything about your golf game..."
+                        class="chat-input">
+                    <button id="sendMessage" class="btn">Send</button>
+                </div>
+            </div>
+
+            <div class="coaching-features">
+                <h3>💡 Try asking:</h3>
+                <div class="feature-suggestions">
+                    <button class="suggestion-btn"
+                        data-suggestion="What are my biggest weaknesses based on my recent rounds?">Analyze my
+                        weaknesses</button>
+                    <button class="suggestion-btn"
+                        data-suggestion="How can I improve my putting based on my practice data?">Putting tips</button>
+                    <button class="suggestion-btn"
+                        data-suggestion="What practice drills should I focus on this week?">Practice
+                        recommendations</button>
+                    <button class="suggestion-btn"
+                        data-suggestion="How is my handicap trending and what does it mean?">Handicap analysis</button>
+                </div>
             </div>
         </div>
     </div>
@@ -198,7 +334,7 @@
     </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 
 </html>
