@@ -5,6 +5,46 @@
     box-sizing: border-box;
 }
 
+/* Animated Background */
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+.bg {
+    animation: slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+    bottom: 0;
+    left: -50%;
+    opacity: .5;
+    position: fixed;
+    right: -50%;
+    top: 0;
+    z-index: -1;
+}
+
+.bg2 {
+    animation-direction: alternate-reverse;
+    animation-duration: 4s;
+}
+
+.bg3 {
+    animation-duration: 5s;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(25%);
+    }
+}
+
 :root {
     --primary-color: #2ecc71;
     --primary-dark: #27ae60;
@@ -23,14 +63,16 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
-    background: var(--background-color);
     padding: 20px;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 /* Header Styles */
@@ -41,6 +83,8 @@ body {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     border-radius: 12px;
     color: white;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .header h1 {
@@ -71,7 +115,7 @@ body {
 .tab-btn {
     padding: 12px 24px;
     border: none;
-    background: var(--card-background);
+    background: rgba(255, 255, 255, 0.9);
     color: var(--text-color);
     font-size: 1rem;
     font-weight: 600;
@@ -80,6 +124,8 @@ body {
     transition: all var(--transition-speed) ease;
     white-space: nowrap;
     box-shadow: 0 2px 4px var(--shadow-color);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .tab-btn:hover {
@@ -110,11 +156,13 @@ body {
 
 /* Card Styles */
 .card {
-    background: var(--card-background);
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2rem;
     box-shadow: 0 4px 6px var(--shadow-color);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .card h2 {
@@ -278,6 +326,19 @@ textarea {
     .settings-buttons .btn {
         width: 100%;
     }
+
+    /* Optimize animated background for mobile */
+    .bg {
+        animation-duration: 4s;
+    }
+
+    .bg2 {
+        animation-duration: 5s;
+    }
+
+    .bg3 {
+        animation-duration: 6s;
+    }
 }
 
 /* Dark Mode Support */
@@ -290,15 +351,22 @@ textarea {
         --shadow-color: rgba(0, 0, 0, 0.2);
     }
 
+    .card {
+        background: rgba(45, 45, 45, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
     .tab-btn {
-        background: var(--card-background);
+        background: rgba(45, 45, 45, 0.9);
         color: var(--text-color);
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     input,
     select,
     textarea {
-        background: var(--card-background);
+        background: rgba(45, 45, 45, 0.9);
         color: var(--text-color);
+        border: 2px solid var(--border-color);
     }
 }
