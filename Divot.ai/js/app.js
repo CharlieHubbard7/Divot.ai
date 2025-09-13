@@ -1,6 +1,7 @@
 // Main Application Entry Point
 import { TabManager } from './modules/TabManager.js';
 import { HandicapCalculator } from './modules/HandicapCalculator.js';
+import { ClaudeAPI } from './modules/ClaudeAPI.js';
 import { StorageManager } from './utils/storage.js';
 import { GolfHelpers } from './utils/helpers.js';
 import { UIUtils } from './utils/ui.js';
@@ -15,6 +16,7 @@ class GolfTrackerApp {
         this.rounds = [];
         this.settings = {};
         this.components = {};
+        this.claudeAPI = new ClaudeAPI();
 
         this.init();
     }
@@ -27,6 +29,7 @@ class GolfTrackerApp {
             this.loadData();
             this.initializeComponents();
             this.bindGlobalEvents();
+            this.initializeInteractiveFeatures();
             this.updateUI();
 
             console.log(`${APP_CONFIG.NAME} v${APP_CONFIG.VERSION} initialized successfully`);
@@ -234,6 +237,13 @@ class GolfTrackerApp {
             notifications: form.notifications.value
         };
 
+        // Handle Claude API key
+        const apiKey = form.claudeApiKey.value.trim();
+        if (apiKey) {
+            this.claudeAPI.setApiKey(apiKey);
+            UIUtils.showNotification('Claude API key saved successfully!', 'success');
+        }
+
         StorageManager.setSettings(this.settings);
         UIUtils.showNotification('Settings saved successfully!', 'success');
     }
@@ -341,12 +351,106 @@ class GolfTrackerApp {
     }
 
     /**
+     * Initialize interactive features
+     */
+    initializeInteractiveFeatures() {
+        this.createInteractiveCursor();
+        this.createParticleSystem();
+        this.addCardHoverEffects();
+        this.updateHeaderStats();
+    }
+
+    /**
+     * Create interactive cursor effect
+     */
+    createInteractiveCursor() {
+        const cursor = document.createElement('div');
+        cursor.className = 'interactive-cursor';
+        document.body.appendChild(cursor);
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+            cursor.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursor.style.opacity = '0';
+        });
+
+        // Add glow effect on hover
+        document.querySelectorAll('.card, .btn, .tab-btn').forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.background = 'radial-gradient(circle, var(--color-primary) 0%, transparent 70%)';
+            });
+            element.addEventListener('mouseleave', () => {
+                cursor.style.background = 'radial-gradient(circle, var(--color-secondary) 0%, transparent 70%)';
+            });
+        });
+    }
+
+    /**
+     * Create particle system
+     */
+    createParticleSystem() {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles';
+        document.body.appendChild(particlesContainer);
+
+        const createParticle = () => {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particlesContainer.appendChild(particle);
+
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 10000);
+        };
+
+        // Create particles periodically
+        setInterval(createParticle, 2000);
+    }
+
+    /**
+     * Add card hover effects
+     */
+    addCardHoverEffects() {
+        document.querySelectorAll('.card').forEach(card => {
+            card.classList.add('glow-on-hover', 'tilt-3d');
+        });
+
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.classList.add('ripple', 'smooth-transition');
+        });
+    }
+
+    /**
+     * Update header statistics
+     */
+    updateHeaderStats() {
+        const headerSessions = document.getElementById('headerSessions');
+        const headerRounds = document.getElementById('headerRounds');
+        const headerHandicap = document.getElementById('headerHandicap');
+
+        if (headerSessions) headerSessions.textContent = this.sessions.length;
+        if (headerRounds) headerRounds.textContent = this.rounds.length;
+        if (headerHandicap) {
+            const handicap = GolfHelpers.calculateHandicap(this.rounds);
+            headerHandicap.textContent = handicap ? handicap : 'N/A';
+        }
+    }
+
+    /**
      * Initialize AI coaching interface
      */
     initializeCoaching() {
         const sendButton = document.getElementById('sendMessage');
         const input = document.getElementById('coachingInput');
-        const suggestionButtons = document.querySelectorAll('.suggestion-btn');
+        const actionCards = document.querySelectorAll('.action-card');
 
         if (sendButton) {
             sendButton.addEventListener('click', () => this.sendCoachingMessage());
@@ -358,10 +462,10 @@ class GolfTrackerApp {
             });
         }
 
-        suggestionButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
+        actionCards.forEach(card => {
+            card.addEventListener('click', () => {
                 if (input) {
-                    input.value = btn.getAttribute('data-suggestion');
+                    input.value = card.getAttribute('data-suggestion');
                     this.sendCoachingMessage();
                 }
             });
@@ -371,7 +475,7 @@ class GolfTrackerApp {
     /**
      * Send coaching message
      */
-    sendCoachingMessage() {
+    async sendCoachingMessage() {
         const input = document.getElementById('coachingInput');
         if (!input) return;
 
@@ -381,25 +485,75 @@ class GolfTrackerApp {
         this.addMessageToChat(message, 'user');
         input.value = '';
 
-        // Simulate AI response
-        setTimeout(() => {
-            const response = this.generateCoachingResponse(message);
+        // Show loading message
+        const loadingMessage = this.addMessageToChat('', 'ai', true);
+        loadingMessage.querySelector('.message-text').innerHTML = '<span class="loading-dots">Thinking</span>';
+
+        try {
+            // Prepare context for Claude
+            const context = {
+                sessions: this.sessions,
+                rounds: this.rounds,
+                handicap: GolfHelpers.calculateHandicap(this.rounds)
+            };
+
+            let response;
+            if (this.claudeAPI.hasApiKey()) {
+                // Use Claude API
+                response = await this.claudeAPI.sendMessage(message, context);
+            } else {
+                // Fallback to local response
+                response = this.generateCoachingResponse(message);
+            }
+
+            // Remove loading message and add real response
+            loadingMessage.remove();
             this.addMessageToChat(response, 'ai');
-        }, 1000);
+
+        } catch (error) {
+            console.error('Coaching message error:', error);
+            loadingMessage.remove();
+            this.addMessageToChat(
+                `Sorry, I encountered an error: ${error.message}. Please check your API key in settings.`,
+                'ai'
+            );
+        }
     }
 
     /**
      * Add message to chat
      */
-    addMessageToChat(message, sender) {
+    addMessageToChat(message, sender, isLoading = false) {
         const chatContainer = document.getElementById('chatContainer');
         if (!chatContainer) return;
 
         const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${sender}-message`;
-        messageDiv.innerHTML = `<div class="message-content"><strong>${sender === 'ai' ? 'AI Coach' : 'You'}:</strong> ${message}</div>`;
+        messageDiv.className = `message ${sender}-message ${isLoading ? 'loading' : ''}`;
+
+        const now = new Date();
+        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <div class="avatar-circle small">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="message-content">
+                <div class="message-header">
+                    <span class="sender-name">${sender === 'ai' ? 'Claude AI' : 'You'}</span>
+                    <span class="message-time">${timeString}</span>
+                </div>
+                <div class="message-text">${message}</div>
+            </div>
+        `;
+
         chatContainer.appendChild(messageDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        return messageDiv;
     }
 
     /**
@@ -445,6 +599,13 @@ class GolfTrackerApp {
         form.defaultDuration.value = this.settings.defaultDuration;
         form.theme.value = this.settings.theme;
         form.notifications.value = this.settings.notifications;
+
+        // Load existing API key (masked)
+        const existingKey = this.claudeAPI.getApiKey();
+        if (existingKey) {
+            form.claudeApiKey.placeholder = 'API key is set (enter new key to update)';
+            form.claudeApiKey.value = '';
+        }
     }
 
     /**

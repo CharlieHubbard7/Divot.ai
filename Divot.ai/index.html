@@ -17,22 +17,77 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>DIVOT.AI</h1>
-            <p>Track your practice, improve your game</p>
+            <div class="header-content">
+                <div class="header-brand">
+                    <h1 class="header-title">DIVOT.AI</h1>
+                    <p class="header-tagline">Smart Practice, Better Golf</p>
+                </div>
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <span class="stat-number" id="headerSessions">0</span>
+                        <span class="stat-label">Sessions</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="stat-number" id="headerRounds">0</span>
+                        <span class="stat-label">Rounds</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="stat-number" id="headerHandicap">N/A</span>
+                        <span class="stat-label">Handicap</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Tab Navigation -->
         <div class="tab-navigation">
             <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="coaching">AI Coach</button>
             <button class="tab-btn" data-tab="practice">Practice Log</button>
             <button class="tab-btn" data-tab="rounds">Add Round</button>
             <button class="tab-btn" data-tab="history">History</button>
-            <button class="tab-btn" data-tab="coaching">AI Coaching</button>
             <button class="tab-btn" data-tab="settings">Settings</button>
         </div>
 
         <!-- Dashboard Tab -->
         <div class="tab-content active" id="dashboard">
+            <!-- AI Coach Spotlight -->
+            <div class="ai-spotlight-card">
+                <div class="ai-spotlight-content">
+                    <div class="ai-spotlight-header">
+                        <div class="ai-avatar-large">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <div class="ai-spotlight-text">
+                            <h2>Your AI Golf Coach</h2>
+                            <p>Get personalized insights and coaching advice powered by Claude AI</p>
+                        </div>
+                    </div>
+                    <div class="ai-quick-actions">
+                        <button class="ai-quick-btn" onclick="document.querySelector('[data-tab=coaching]').click()">
+                            <span class="ai-btn-icon">💬</span>
+                            <span>Ask Claude</span>
+                        </button>
+                        <button class="ai-quick-btn" onclick="document.querySelector('[data-tab=coaching]').click()">
+                            <span class="ai-btn-icon">📊</span>
+                            <span>Analyze Game</span>
+                        </button>
+                        <button class="ai-quick-btn" onclick="document.querySelector('[data-tab=coaching]').click()">
+                            <span class="ai-btn-icon">🎯</span>
+                            <span>Get Tips</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Handicap Display -->
             <div class="card handicap-card">
                 <h2>🏆 Your Handicap</h2>
@@ -250,42 +305,108 @@
 
     <!-- AI Coaching Tab -->
     <div class="tab-content" id="coaching">
-        <div class="card">
-            <h2>🤖 AI Golf Coach</h2>
-            <p class="coaching-intro">Get personalized coaching advice based on your practice sessions and round data.
-                Ask questions about your game, get tips for improvement, and receive data-driven insights.</p>
+        <div class="coaching-container">
+            <!-- AI Coach Header -->
+            <div class="coach-header">
+                <div class="coach-avatar">
+                    <div class="avatar-circle">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="coach-info">
+                    <h2>Claude AI Coach</h2>
+                    <p>Your intelligent golf companion</p>
+                    <div class="coach-status">
+                        <div class="status-indicator online"></div>
+                        <span>Online & Ready</span>
+                    </div>
+                </div>
+            </div>
 
-            <div class="coaching-interface">
-                <div class="chat-container" id="chatContainer">
-                    <div class="chat-message ai-message">
+            <!-- Chat Interface -->
+            <div class="chat-interface">
+                <div class="chat-messages" id="chatContainer">
+                    <div class="message ai-message">
+                        <div class="message-avatar">
+                            <div class="avatar-circle small">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </div>
                         <div class="message-content">
-                            <strong>AI Coach:</strong> Hello! I'm your AI golf coach. I can analyze your practice
-                            sessions and rounds to provide personalized advice. What would you like to know about your
-                            game?
+                            <div class="message-header">
+                                <span class="sender-name">Claude AI</span>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="message-text">
+                                Hello! I'm your AI golf coach powered by Claude. I can analyze your practice sessions
+                                and rounds to provide personalized advice. What would you like to know about your game?
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="chat-input-container">
-                    <input type="text" id="coachingInput" placeholder="Ask me anything about your golf game..."
-                        class="chat-input">
-                    <button id="sendMessage" class="btn">Send</button>
+                <div class="chat-input-area">
+                    <div class="input-container">
+                        <input type="text" id="coachingInput" placeholder="Ask me anything about your golf game..."
+                            class="chat-input">
+                        <button id="sendMessage" class="send-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="coaching-features">
-                <h3>💡 Try asking:</h3>
-                <div class="feature-suggestions">
-                    <button class="suggestion-btn"
-                        data-suggestion="What are my biggest weaknesses based on my recent rounds?">Analyze my
-                        weaknesses</button>
-                    <button class="suggestion-btn"
-                        data-suggestion="How can I improve my putting based on my practice data?">Putting tips</button>
-                    <button class="suggestion-btn"
-                        data-suggestion="What practice drills should I focus on this week?">Practice
-                        recommendations</button>
-                    <button class="suggestion-btn"
-                        data-suggestion="How is my handicap trending and what does it mean?">Handicap analysis</button>
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h3>Quick Insights</h3>
+                <div class="action-grid">
+                    <button class="action-card"
+                        data-suggestion="What are my biggest weaknesses based on my recent rounds?">
+                        <div class="action-icon">🎯</div>
+                        <div class="action-text">
+                            <h4>Weakness Analysis</h4>
+                            <p>Identify areas for improvement</p>
+                        </div>
+                    </button>
+                    <button class="action-card"
+                        data-suggestion="How can I improve my putting based on my practice data?">
+                        <div class="action-icon">⛳</div>
+                        <div class="action-text">
+                            <h4>Putting Tips</h4>
+                            <p>Improve your short game</p>
+                        </div>
+                    </button>
+                    <button class="action-card" data-suggestion="What practice drills should I focus on this week?">
+                        <div class="action-icon">🏌️</div>
+                        <div class="action-text">
+                            <h4>Practice Plan</h4>
+                            <p>Get personalized drills</p>
+                        </div>
+                    </button>
+                    <button class="action-card" data-suggestion="How is my handicap trending and what does it mean?">
+                        <div class="action-icon">📈</div>
+                        <div class="action-text">
+                            <h4>Handicap Analysis</h4>
+                            <p>Track your progress</p>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -317,6 +438,17 @@
                         <option value="weekly">Weekly</option>
                         <option value="none">None</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="claudeApiKey">Claude API Key:</label>
+                    <input type="password" id="claudeApiKey" name="claudeApiKey"
+                        placeholder="Enter your Claude API key for AI coaching">
+                    <small
+                        style="color: var(--text-muted); font-size: var(--font-size-xs); margin-top: var(--space-1); display: block;">
+                        Get your API key from <a href="https://console.anthropic.com/" target="_blank"
+                            style="color: var(--color-primary);">Anthropic Console</a>
+                    </small>
                 </div>
 
                 <div class="form-group">

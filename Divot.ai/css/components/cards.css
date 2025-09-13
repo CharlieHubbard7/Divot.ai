@@ -8,6 +8,9 @@
     box-shadow: var(--shadow-md);
     backdrop-filter: blur(20px);
     transition: all var(--transition-normal);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .card:hover {

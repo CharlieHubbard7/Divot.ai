@@ -3,6 +3,10 @@
 @import url('./css/components/base.css');
 @import url('./css/components/buttons.css');
 @import url('./css/components/cards.css');
+@import url('./css/components/header.css');
+@import url('./css/components/coaching.css');
+@import url('./css/components/ai-spotlight.css');
+@import url('./css/components/interactive.css');
 
 /* Animated Background */
 .bg {
@@ -10,11 +14,12 @@
     background-image: linear-gradient(-60deg, var(--color-primary) 50%, var(--color-secondary) 50%);
     bottom: 0;
     left: -50%;
-    opacity: 0.2;
+    opacity: 0.15;
     position: fixed;
     right: -50%;
     top: 0;
     z-index: -1;
+    filter: blur(1px);
 }
 
 .bg2 {
@@ -62,12 +67,14 @@
 /* Tab Navigation */
 .tab-navigation {
     display: flex;
-    gap: var(--space-2);
+    justify-content: center;
+    gap: var(--space-3);
     margin-bottom: var(--space-8);
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-bottom: var(--space-2);
+    flex-wrap: wrap;
 }
 
 .tab-navigation::-webkit-scrollbar {
@@ -143,6 +150,7 @@ textarea {
 /* Handicap Display */
 .handicap-display {
     margin: var(--space-8) 0;
+    text-align: center;
 }
 
 .handicap-number {
@@ -152,17 +160,20 @@ textarea {
     margin-bottom: var(--space-2);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     line-height: 1;
+    color: var(--color-white);
 }
 
 .handicap-label {
     font-size: var(--font-size-lg);
     opacity: 0.9;
     font-weight: var(--font-weight-medium);
+    color: var(--color-white);
 }
 
 .handicap-trend {
     margin-top: var(--space-4);
     font-size: var(--font-size-base);
+    text-align: center;
 }
 
 .trend-text {
@@ -171,6 +182,7 @@ textarea {
     border-radius: var(--radius-full);
     display: inline-block;
     font-size: var(--font-size-sm);
+    color: var(--color-white);
 }
 
 /* Chart Container */

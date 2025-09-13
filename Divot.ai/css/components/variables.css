@@ -1,22 +1,28 @@
 /* CSS Custom Properties (Variables) */
 :root {
     /* Color Palette */
-    --color-primary: #4169E1;
-    /* Royal Blue */
-    --color-primary-dark: #1E3A8A;
-    /* Dark Royal Blue */
-    --color-secondary: #FA8072;
-    /* Salmon */
-    --color-accent: #FF6B6B;
-    /* Light Salmon */
+    --color-primary: #DC2626;
+    /* Red */
+    --color-primary-dark: #991B1B;
+    /* Dark Red */
+    --color-primary-light: #F87171;
+    /* Light Red */
+    --color-secondary: #0EA5E9;
+    /* Sky Blue */
+    --color-secondary-dark: #0284C7;
+    /* Dark Sky Blue */
+    --color-secondary-light: #7DD3FC;
+    /* Light Sky Blue */
+    --color-accent: #F59E0B;
+    /* Amber */
     --color-success: #10B981;
     /* Green */
     --color-warning: #F59E0B;
     /* Amber */
     --color-error: #EF4444;
     /* Red */
-    --color-info: #3B82F6;
-    /* Blue */
+    --color-info: #0EA5E9;
+    /* Sky Blue */
 
     /* Neutral Colors */
     --color-white: #FFFFFF;

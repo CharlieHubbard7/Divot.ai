@@ -1,0 +1,153 @@
+/* Professional Header Styles */
+.header {
+    position: relative;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-8);
+    padding: var(--space-12) var(--space-8);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="golf-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23golf-pattern)"/></svg>');
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.header-brand {
+    width: 100%;
+    margin-bottom: var(--space-8);
+}
+
+.header-title {
+    font-size: clamp(6rem, 16vw, 12rem);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    margin: 0;
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: -0.05em;
+    line-height: 0.8;
+    background: linear-gradient(45deg, var(--color-white) 0%, rgba(255, 255, 255, 0.95) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    margin-bottom: var(--space-4);
+}
+
+.header-tagline {
+    font-size: var(--font-size-xl);
+    color: rgba(255, 255, 255, 0.9);
+    margin: var(--space-4) 0 0 0;
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.header-stats {
+    display: flex;
+    gap: var(--space-8);
+    align-items: center;
+}
+
+.header-stat {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    padding: var(--space-4) var(--space-6);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    min-width: 80px;
+    transition: all var(--transition-normal);
+}
+
+.header-stat:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.header-stat .stat-number {
+    display: block;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-white);
+    line-height: 1;
+    margin-bottom: var(--space-1);
+}
+
+.header-stat .stat-label {
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Interactive Background Effects */
+.header:hover .header-title {
+    transform: scale(1.02);
+    transition: transform var(--transition-normal);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .header {
+        padding: var(--space-8) var(--space-6);
+        min-height: 150px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: var(--space-6);
+        text-align: center;
+    }
+
+    .header-stats {
+        gap: var(--space-4);
+    }
+
+    .header-stat {
+        padding: var(--space-3) var(--space-4);
+        min-width: 60px;
+    }
+
+    .header-stat .stat-number {
+        font-size: var(--font-size-xl);
+    }
+
+}
+
+@media (max-width: 480px) {
+    .header-stats {
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .header-stat {
+        min-width: 100px;
+    }
+}

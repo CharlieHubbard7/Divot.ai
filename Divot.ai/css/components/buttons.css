@@ -167,6 +167,42 @@
     box-shadow: var(--shadow-md);
 }
 
+/* Special styling for AI Coach tab */
+.tab-btn[data-tab="coaching"] {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    color: var(--color-white);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-weight: var(--font-weight-bold);
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn[data-tab="coaching"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.tab-btn[data-tab="coaching"]:hover::before {
+    left: 100%;
+}
+
+.tab-btn[data-tab="coaching"]:hover {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary-dark) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.tab-btn[data-tab="coaching"].tab-btn--active {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+}
+
 .tab-btn:focus-visible {
     outline: 2px solid var(--border-focus);
     outline-offset: 2px;
