@@ -238,3 +238,4 @@ Always base your advice on the actual data provided and be specific about what t
         localStorage.removeItem('claude_api_key');
     }
 }
+

@@ -234,7 +234,7 @@
     height: 0;
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid var(--color-primary);
+    border-right: 8px solid #DC2626;
 }
 
 .user-message .message-text {
