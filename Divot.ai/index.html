@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf Practice Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🏌️‍♂️ Golf Practice Tracker</h1>
+            <p>Track your practice, improve your game</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="practice">Practice Log</button>
+            <button class="tab-btn" data-tab="history">History</button>
+            <button class="tab-btn" data-tab="settings">Settings</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="card">
+                <h2>📊 Your Progress</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalSessions">0</span>
+                        <span class="stat-label">Total Sessions</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalHours">0</span>
+                        <span class="stat-label">Hours Practiced</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="avgDuration">0</span>
+                        <span class="stat-label">Avg Minutes</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="avgRating">0</span>
+                        <span class="stat-label">Avg Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Log Tab -->
+        <div class="tab-content" id="practice">
+            <div class="card">
+                <h2>Log Practice Session</h2>
+                <form id="practiceForm">
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="duration">Duration (minutes):</label>
+                        <input type="number" id="duration" name="duration" min="1" max="300" required placeholder="60">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="focus">Main Focus:</label>
+                        <select id="focus" name="focus" required>
+                            <option value="">Select focus area...</option>
+                            <option value="Driver">Driver</option>
+                            <option value="Irons">Irons</option>
+                            <option value="Short Game">Short Game</option>
+                            <option value="Putting">Putting</option>
+                            <option value="Chipping">Chipping</option>
+                            <option value="Bunker Play">Bunker Play</option>
+                            <option value="Full Swing">Full Swing</option>
+                            <option value="Course Management">Course Management</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="clubs">Clubs Used:</label>
+                        <input type="text" id="clubs" name="clubs" placeholder="Driver, 7-iron, PW" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ballsHit">Balls Hit:</label>
+                        <input type="number" id="ballsHit" name="ballsHit" min="1" max="200" required placeholder="50">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="summary">Session Summary (2 sentences):</label>
+                        <textarea id="summary" name="summary" required
+                            placeholder="What did you work on? How did it feel?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rating">Session Rating (1-5 stars):</label>
+                        <select id="rating" name="rating" required>
+                            <option value="">Rate your session...</option>
+                            <option value="1">⭐ - Poor</option>
+                            <option value="2">⭐⭐ - Below Average</option>
+                            <option value="3">⭐⭐⭐ - Average</option>
+                            <option value="4">⭐⭐⭐⭐ - Good</option>
+                            <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-full">Log Practice Session</button>
+                </form>
+            </div>
+
+            <!-- Statistics -->
+            <div class="card">
+                <h2>📊 Your Progress</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalSessions">0</span>
+                        <span class="stat-label">Total Sessions</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalHours">0</span>
+                        <span class="stat-label">Hours Practiced</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="avgDuration">0</span>
+                        <span class="stat-label">Avg Minutes</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="avgRating">0</span>
+                        <span class="stat-label">Avg Rating</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- History Tab -->
+    <div class="tab-content" id="history">
+        <div class="card">
+            <div class="session-header-bar">
+                <h2>📈 Practice History</h2>
+                <button class="btn" onclick="golfTracker.exportData()">Export Data</button>
+            </div>
+            <div id="sessionsList" class="session-list">
+                <!-- Sessions will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div class="tab-content" id="settings">
+        <div class="card">
+            <h2>⚙️ Settings</h2>
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label for="defaultDuration">Default Practice Duration (minutes):</label>
+                    <input type="number" id="defaultDuration" name="defaultDuration" min="15" max="300" value="60">
+                </div>
+
+                <div class="form-group">
+                    <label for="theme">Theme:</label>
+                    <select id="theme" name="theme">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="auto">System Default</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notifications">Practice Reminders:</label>
+                    <select id="notifications" name="notifications">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="none">None</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="dataExport">Data Management:</label>
+                    <div class="settings-buttons">
+                        <button type="button" class="btn" onclick="golfTracker.exportData()">Export All Data</button>
+                        <button type="button" class="btn btn-danger" onclick="golfTracker.clearData()">Clear All
+                            Data</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-full">Save Settings</button>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
